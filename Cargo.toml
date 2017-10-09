@@ -1,0 +1,7 @@
+[package]
+name = "r_wave"
+version = "0.1.0"
+authors = ["Simon Moushabeck <SimonMoush@gmail.com>"]
+
+[dependencies]
+piston_window = "0.71.1"
