@@ -11,36 +11,6 @@ struct Color {
     color: [f32; 4],
 }
 
-impl Color {
-    fn red(&self) -> f32{
-        self.color[0]
-    }
-    fn set_red(&mut self, val: f32){
-        self.color[0] = val;
-    }
-
-    fn green(&self) -> f32{
-        self.color[1]
-    }
-    fn set_green(&mut self, val: f32){
-        self.color[1] = val;
-    }
-
-    fn blue(&self) -> f32{
-        self.color[2]
-    }
-    fn set_blue(&mut self, val: f32){
-        self.color[2] = val;
-    }
-
-    fn alpha(&self) -> f32{
-        self.color[3]
-    }
-    fn set_alpha(&mut self, val: f32){
-        self.color[3] = val;
-    }
-}
-
 impl Spatial for Color{
     type Scalar = f32;
     fn add(&self, other: &Self) -> Self {
