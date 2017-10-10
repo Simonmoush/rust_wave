@@ -5,3 +5,4 @@ authors = ["Simon Moushabeck <SimonMoush@gmail.com>"]
 
 [dependencies]
 piston_window = "0.71.1"
+interpolation = "0.1.0"
