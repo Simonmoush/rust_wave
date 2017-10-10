@@ -5,6 +5,7 @@ use piston_window::*;
 
 use self::interpolation::{Spatial, lerp};
 
+use model::PressureField;
 
 struct Color {
     color: [f32; 4],
@@ -43,27 +44,27 @@ impl Color {
 impl Spatial for Color{
     type Scalar = f32;
     fn add(&self, other: &Self) -> Self {
-        let mut newColor = Color{color: [0.0; 4]};
+        let mut new_color = Color{color: [0.0; 4]};
         for (i, c) in self.color.iter().enumerate(){
-            newColor.color[i] = c + other.color[i];
+            new_color.color[i] = c + other.color[i];
         }
-        return newColor;
+        return new_color;
     }
 
     fn sub(&self, other: &Self) -> Self {
-        let mut newColor = Color{color: [0.0; 4]};
+        let mut new_color = Color{color: [0.0; 4]};
         for (i, c) in self.color.iter().enumerate(){
-            newColor.color[i] = c - other.color[i];
+            new_color.color[i] = c - other.color[i];
         }
-        return newColor;
+        return new_color;
     }
 
     fn scale(&self, scalar: &Self::Scalar) -> Self {
-        let mut newColor = Color{color: [0.0; 4]};
+        let mut new_color = Color{color: [0.0; 4]};
         for (i, c) in self.color.iter().enumerate(){
-            newColor.color[i] = c * scalar;
+            new_color.color[i] = c * scalar;
         }
-        return newColor;
+        return new_color;
     }
 }
 
@@ -77,14 +78,20 @@ fn get_color(value: f32, max: f32, min: f32) -> [f32; 4] {
     return new_color.color;
 }
 
-pub fn render(window: &mut PistonWindow, e: &Event, field: &Vec<Vec<f32>>, max: f32, min: f32) {
+pub fn render(window: &mut PistonWindow, e: &Event, field: &PressureField) {
+    let window_width = window.window.size().width;
+    let window_height = window.window.size().height;
     window.draw_2d(e, |c, g| {
-        clear([1.0; 4], g);
-        for col in field.iter(){
-            for cell in col.iter(){
-                let color = get_color(*cell, max, min);
+        //clear([1.0; 4], g);
+        for (i, col) in field.field.iter().enumerate(){
+            for (j, cell) in col.iter().enumerate(){
+                let color = get_color(*cell, field.max_pressure, field.min_pressure);
+                let h_unit = window_width / field.width as u32;
+                let v_unit = window_height / field.height as u32;
+                
+                let (h_unit, v_unit, i, j) = (h_unit as f64, v_unit as f64, i as f64, j as f64);
                 rectangle(color,
-                          [0.0, 0.0, 100.0, 100.0], // position and dimensions
+                          [h_unit * i, v_unit * j, h_unit, v_unit], // position and dimensions f64
                           c.transform, g);
             }
         }

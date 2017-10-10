@@ -18,8 +18,7 @@ impl PressureField {
             let x = x as usize;
             field.push(Vec::with_capacity(height));
             changes.push(Vec::with_capacity(height));
-            for y in 0..height{
-                let y = y as usize;
+            for _ in 0..height{
                 field[x].push(0.0);
                 changes[x].push(0.0);
             }
@@ -43,12 +42,11 @@ impl PressureField {
         let mut changes: Vec<Vec<f32>> = Vec::with_capacity(width);
         for x in 0..width {
             let x = x as usize;
-            field[x] = Vec::with_capacity(height);
-            changes[x] = Vec::with_capacity(height);
-            for y in 0..height{
-                let y = y as usize;
-                field[x][y] = 0.0;
-                changes[x][y] = 0.0;
+            field.push(Vec::with_capacity(height));
+            changes.push(Vec::with_capacity(height));
+            for _ in 0..height{
+                field[x].push(0.0);
+                changes[x].push(0.0);
             }
         }
 

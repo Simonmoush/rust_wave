@@ -13,11 +13,11 @@ fn main() {
         .exit_on_esc(true).build().unwrap();
 
     // make the model
-    let mut m = PressureField::new(100, 100);
+    let mut m = PressureField::with_dot(100, 100);
 
     //event loop
     while let Some(e) = window.next(){
         m.update();
-        render(&mut window, &e, &m.changes, m.max_change, m.min_change);
+        render(&mut window, &e, &m);
     }
 }
