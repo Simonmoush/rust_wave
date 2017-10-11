@@ -1,19 +1,19 @@
 pub struct PressureField {
-    pub field: Vec<Vec<f32>>,
-    pub changes: Vec<Vec<f32>>,
+    pub field: Vec<Vec<f64>>,
+    pub changes: Vec<Vec<f64>>,
     pub width: usize,
     pub height: usize,
-    pub max_pressure: f32,
-    pub min_pressure: f32,
-    pub max_change: f32,
-    pub min_change: f32,
-    pub transfer_loss: f32
+    pub max_pressure: f64,
+    pub min_pressure: f64,
+    pub max_change: f64,
+    pub min_change: f64,
+    pub transfer_loss: f64
 }
 
 impl PressureField {
     pub fn new(width: usize, height: usize) -> PressureField {
-        let mut field: Vec<Vec<f32>> = Vec::with_capacity(width);
-        let mut changes: Vec<Vec<f32>> = Vec::with_capacity(width);
+        let mut field: Vec<Vec<f64>> = Vec::with_capacity(width);
+        let mut changes: Vec<Vec<f64>> = Vec::with_capacity(width);
         for x in 0..width {
             let x = x as usize;
             field.push(Vec::with_capacity(height));
@@ -38,8 +38,8 @@ impl PressureField {
     }
 
     pub fn with_dot(width: usize, height: usize) -> PressureField {
-        let mut field: Vec<Vec<f32>> = Vec::with_capacity(width);
-        let mut changes: Vec<Vec<f32>> = Vec::with_capacity(width);
+        let mut field: Vec<Vec<f64>> = Vec::with_capacity(width);
+        let mut changes: Vec<Vec<f64>> = Vec::with_capacity(width);
         for x in 0..width {
             let x = x as usize;
             field.push(Vec::with_capacity(height));
@@ -126,6 +126,8 @@ impl PressureField {
             for (y, cell) in col.iter_mut().enumerate(){
                 
                 *cell += self.changes[x][y]; // check that this works
+
+                *cell *= 0.995; // add some damping
 
                 // keep track of the min and max pressure and change
                 self.max_pressure = if self.max_pressure < *cell { *cell } else { self.max_pressure };

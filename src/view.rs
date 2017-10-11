@@ -38,8 +38,8 @@ impl Spatial for Color{
     }
 }
 
-fn get_color(value: f32, max: f32, min: f32) -> [f32; 4] {
-    let scalar = (value - min)/(max - min); // scale the value from 0 to 1
+fn get_color(value: f64, max: f64, min: f64) -> [f32; 4] {
+    let scalar = ((value - min)/(max - min)) as f32; // scale the value from 0 to 1
 
     let low_color = Color{color: [0.537, 0.0, 0.808, 1.0]};
     let high_color = Color{color: [0.141, 0.957, 0.741, 1.0]};
@@ -54,6 +54,7 @@ pub fn render(window: &mut PistonWindow, e: &Event, field: &PressureField) {
     window.draw_2d(e, |c, g| {
         for (i, col) in field.field.iter().enumerate(){
             for (j, cell) in col.iter().enumerate(){
+                //let color = get_color(field.changes[i][j], field.max_change, field.min_change);
                 let color = get_color(*cell, field.max_pressure, field.min_pressure);
                 let h_unit = window_width / field.width as u32;
                 let v_unit = window_height / field.height as u32;

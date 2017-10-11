@@ -13,8 +13,9 @@ fn main() {
         .exit_on_esc(true).build().unwrap();
 
     // make the model
-    let mut model = PressureField::new(50, 50);
+    let mut model = PressureField::new(100, 100);
 
+    let mut drag: bool = false;
     //event loop
     while let Some(e) = window.next(){
         if let Event::Loop(l) = e {
@@ -26,10 +27,22 @@ fn main() {
         }else if let Event::Input(i) = e {
             if let Input::Move(m) = i {
                 if let Motion::MouseCursor(x, y) = m {
-                    model.ripple(x, y, window.window.size().width, window.window.size().height);
+                    if drag {
+                        model.ripple(x, y, window.window.size().width, window.window.size().height);
+                    }
                 }
             }else if let Input::Button(b) = i {
-
+                if let Button::Mouse(mb) = b.button {
+                    match mb {
+                        mouse::MouseButton::Left => {
+                            match b.state {
+                                ButtonState::Press => drag = true,
+                                ButtonState::Release => drag = false,
+                            }
+                        },
+                        _ =>(),
+                    }
+                }
             }
         }
     }
