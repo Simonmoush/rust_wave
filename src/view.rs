@@ -52,7 +52,6 @@ pub fn render(window: &mut PistonWindow, e: &Event, field: &PressureField) {
     let window_width = window.window.size().width;
     let window_height = window.window.size().height;
     window.draw_2d(e, |c, g| {
-        //clear([1.0; 4], g);
         for (i, col) in field.field.iter().enumerate(){
             for (j, cell) in col.iter().enumerate(){
                 let color = get_color(*cell, field.max_pressure, field.min_pressure);

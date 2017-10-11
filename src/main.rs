@@ -13,19 +13,24 @@ fn main() {
         .exit_on_esc(true).build().unwrap();
 
     // make the model
-    let mut m = PressureField::with_dot(50, 50);
+    let mut model = PressureField::new(50, 50);
 
     //event loop
     while let Some(e) = window.next(){
-        match e {
-            Event::Loop(l) => {
-                match l {
-                    Loop::Render(r) => render(&mut window, &e, &m),
-                    Loop::Update(u) => m.update(),
-                    _ => (),
+        if let Event::Loop(l) = e {
+            if let Loop::Render(r) = l {
+                render(&mut window, &e, &model);
+            } else if let Loop::Update(u) = l {
+                model.update();
+            }
+        }else if let Event::Input(i) = e {
+            if let Input::Move(m) = i {
+                if let Motion::MouseCursor(x, y) = m {
+                    model.ripple(x, y, window.window.size().width, window.window.size().height);
                 }
-            },
-            _ => (),
+            }else if let Input::Button(b) = i {
+
+            }
         }
     }
 }

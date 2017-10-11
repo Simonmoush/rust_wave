@@ -29,7 +29,7 @@ impl PressureField {
             changes,
             width,
             height,
-            transfer_loss: 0.1,
+            transfer_loss: 0.01,
             min_change: 0.0,
             max_change: 0.0,
             max_pressure: 0.0,
@@ -65,7 +65,7 @@ impl PressureField {
         }
     }
     
-    fn in_bounds(&self, x: i32, y: i32, i: i32, j: i32) -> bool{
+    fn in_bounds(&self, x: i32, y: i32, i: i32, j: i32) -> bool{ // change to just take x and y
         let check_x = x + i;
         let check_y = y + j;
         let width = self.width as i32;
@@ -76,6 +76,19 @@ impl PressureField {
             }
         }
         false
+    }
+
+    pub fn ripple(&mut self, x: f64, y: f64, win_x: u32, win_y: u32){
+        let h_unit = win_x / self.width as u32;
+        let v_unit = win_y / self.height as u32;
+
+        let x_cell = (x as u32 / h_unit) as usize;
+        let y_cell = (y as u32 / v_unit) as usize;
+        
+        if self.in_bounds(x_cell as i32, y_cell as i32, 0, 0){
+            self.changes[x_cell][y_cell] += 50.0;
+        }
+
     }
 
     pub fn update(&mut self){
